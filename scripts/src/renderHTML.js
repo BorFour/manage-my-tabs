@@ -57,3 +57,12 @@ function generateWinSelectBtns(windows, btnName) {
 
   $("#win-btn-" + btnName).toggleClass('window-select-btn window-select-active');
 }
+
+function generateSettings(tabManager) {
+  let $settingsContainer = $(".generated-settings-container");
+  $settingsContainer.empty();
+  for (let setting of tabManager.settings_manager.settingsAsList) {
+    $settingsContainer.append(setting.render());
+  }
+
+}

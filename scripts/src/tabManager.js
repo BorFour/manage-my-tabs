@@ -10,9 +10,29 @@ class TabManager {
     chrome.storage.local.set({
       'winSrc': 'first'
     });
+    this.settings_manager = SettingMothership.importSettings(settings_definition);
+    this.settings_manager.loadSettings();
+    generateSettings(this);
   }
 
   reloadPage() {
+    this.settings_manager.loadSettings();
+    _.extend(this.settings, this.settings_manager.settings);
+    // generateSettings(this);
+    // Add listeners to the generated settings
+    for (let setting of this.settings_manager.settingsAsList) {
+      let $settingThing = $("#" + setting.key);
+      var tabManager = this;
+      $settingThing.on('click', () => {
+        console.log("Cuack");
+        chrome.storage.local.set({
+          [setting.key]: $settingThing.prop("checked")
+        });
+        console.log(tabManager);
+        tabManager.reloadPage();
+      });
+      // $settingThing.click();
+    }
     this.loadBrowserData(function(tabManager) {
       tabManager.getTabGroups();
       tabManager.sortTabGroups();
@@ -61,6 +81,7 @@ class TabManager {
     generateWinSelectBtns(this.windows, this.settings['winSrc']);
     generateTabGroups(tabGroups, 'col-' + this.settings['col'], this.settings['tabCount']);
     generateTabs(tabGroups);
+    // generateSettings(this);
   }
 
   /*
@@ -260,6 +281,8 @@ function initSettings(tabManager, settings) {
   document.getElementById("toggle-limit-tab-group-size").checked = limitTabGroupSize === true;
   document.getElementById("max-tabs-per-group").valueAsNumber = maxTabsPerGroup;
 
+  tabManager.settings_manager.refreshView();
+
   // Set the starting active button for column layout settings
   let colNum = 12 / col;
   let layoutOptions = document.getElementsByClassName("layout-option");
@@ -300,7 +323,6 @@ function initSettings(tabManager, settings) {
     'winSrc': winSrc,
     'tabCount': tabCount,
     'includeManager': includeManager,
-    'limitTabGroupSize': limitTabGroupSize,
     'col': col,
     'querySettings': querySettings
   };

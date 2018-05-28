@@ -1,3 +1,4 @@
+var tabManager = new TabManager();
 document.addEventListener("DOMContentLoaded", function() {
-  addListeners(new TabManager());
+  addListeners(tabManager);
 });
