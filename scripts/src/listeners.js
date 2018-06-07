@@ -189,9 +189,8 @@ function addTabManagerListeners(tabManager) {
           let $targetWindow = $('#windowWithTabGroups-' + tabManager.windows[btnID - 1].id);
           $targetWindow
               .css('background-color', '')
-              .addClass('selected-window', 250)
-              .delay(500)
-              .removeClass('selected-window', 500);
+              .addClass('selected-window')
+              .removeClass('selected-window', 2000);
         }
       }
     });

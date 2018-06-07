@@ -46,4 +46,15 @@
 
 .selected-window {
   background-color: #84cc67;
+  /* transform: rotate(180deg); */
+  -webkit-animation: mymove 1s normal; /* Safari 4.0 - 8.0 */
+  animation: mymove 1s normal;
+}
+
+@-webkit-keyframes mymove {
+    100% {transform: rotate(360deg);}
+}
+
+@keyframes mymove {
+    100% {transform: rotate(360deg);}
 }
